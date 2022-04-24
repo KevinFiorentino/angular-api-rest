@@ -1,4 +1,4 @@
-## Platzi - Angular Componentes y Servicios
+## Platzi - Angular Consumo de APIs Rest
 
 Proyecto creado en colaboración con **Platzi** como contribuidor a su comunidad.
 
@@ -9,6 +9,12 @@ Proyecto creado en colaboración con **Platzi** como contribuidor a su comunidad
 **Componentes y Servicios:**
 [Curso original](https://platzi.com/cursos/angular-componentes/)
 [Contribución](https://platzi-contributors.document360.io/docs/todo-lo-que-aprenderas-sobre-componentes-y-servicios-en-angular)
+
+**Consumo APIs Rest:**
+[Curso original](https://platzi.com/cursos/angular-apis/)
+[Contribución]()
+
+
 
 ---
 
