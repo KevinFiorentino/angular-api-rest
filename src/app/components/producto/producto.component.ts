@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Producto } from '../../interfaces/producto.interface';
+import { Product } from '../../interfaces/producto.interface';
 
 @Component({
   selector: 'app-producto',
@@ -8,12 +8,12 @@ import { Producto } from '../../interfaces/producto.interface';
 })
 export class ProductoComponent {
 
-  @Input() producto!: Producto;
-  @Output() addProduct = new EventEmitter<Producto>();
+  @Input() producto!: Product;
+  @Output() addProduct = new EventEmitter<Product>();
 
   constructor() { }
 
-  addToShoppingCart(p: Producto): void {
+  addToShoppingCart(p: Product): void {
     this.addProduct.emit(p);
   }
 

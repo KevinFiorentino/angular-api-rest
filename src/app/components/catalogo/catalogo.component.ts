@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { Producto } from '../../interfaces/producto.interface';
+import { Product, CreateProducto } from '../../interfaces/producto.interface';
 
 @Component({
   selector: 'app-catalogo',
@@ -9,10 +9,10 @@ import { Producto } from '../../interfaces/producto.interface';
 })
 export class CatalogoComponent implements OnInit {
 
-  public shoppingCart: Producto[] = [];
+  public shoppingCart: Product[] = [];
   public total = 0;
 
-  public productos: Producto[] = [];
+  public productos: Product[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -25,9 +25,23 @@ export class CatalogoComponent implements OnInit {
       });
   }
 
-  addProductToCart(p: Producto): void {
+  addProductToCart(p: Product): void {
     this.shoppingCart.push(p);
     this.total += p.precio;
+  }
+
+  createProduct(): void {
+    const body: CreateProducto = {
+      name: 'Nuevo producto',
+      precio: 100,
+      description: 'Descripción del producto',
+      image: 'https://example.com/image',
+      idCategory: '1'
+    };
+    this.apiService.createProduct(body)
+      .subscribe(p => {
+        // ...
+      });
   }
 
 }
