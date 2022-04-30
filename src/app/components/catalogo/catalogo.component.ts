@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { Product, CreateProducto } from '../../interfaces/producto.interface';
+import { Product, CreateProducto, UpdateProducto } from '../../interfaces/producto.interface';
 
 @Component({
   selector: 'app-catalogo',
@@ -40,7 +40,31 @@ export class CatalogoComponent implements OnInit {
     };
     this.apiService.createProduct(body)
       .subscribe(p => {
-        // ...
+        // Guardamos el nuevo producto, en el Array de productos junto con los otros.
+        this.productos.push(p);
+      });
+  }
+
+  updateProduct(idProduct: number): void {
+    const body: UpdateProducto = {
+      name: 'Nuevo nombre del producto',
+    };
+    this.apiService.updateProductPATCH(idProduct, body)
+      .subscribe(p => {
+        // Reemplazamos el producto actualizado en el Array de productos
+        const index = this.productos.findIndex(product => product.id === p.id);
+        this.productos[index] = p;
+      });
+  }
+
+  deleteProduct(idProduct: number): void {
+    this.apiService.deleteProduct(idProduct)
+      .subscribe(p => {
+        if (p) {
+          // Borramos el producto del Array de productos
+          const index = this.productos.findIndex(product => product.id === idProduct);
+          this.productos.splice(index, 1);
+        }
       });
   }
 

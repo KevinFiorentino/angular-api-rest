@@ -22,8 +22,8 @@ export class ApiService {
 
   /* ********** GET ********** */
 
-  getProducts(): Observable<any> {
-    // return this.http.get(`https://example.com/api/productos`);
+  getProducts(): Observable<Product[]> {
+    // return this.http.get<Product[]>(`https://example.com/api/productos`);
     return of([
       {
         id: 1,
@@ -56,9 +56,9 @@ export class ApiService {
     ])
   }
 
-  getProduct(idProduct: string): Observable<any> {
-    // return this.http.get(`https://example.com/api/productos/${idProduct}`);
-    return of([
+  getProduct(idProduct: number): Observable<Product> {
+    // return this.http.get<Product>(`https://example.com/api/productos/${idProduct}`);
+    return of(
       {
         id: 1,
         name: 'Automobil de juguete',
@@ -66,18 +66,25 @@ export class ApiService {
         description: 'Lorem ipsum...',
         image: 'https://static3.depositphotos.com/1000865/118/i/600/depositphotos_1183767-stock-photo-toy-car.jpg'
       }
-    ]);
+    );
   }
 
 
   /* ********** PUT & PATCH ********** */
 
-  updateProductPUT(idProduct: string, body: UpdateProducto): Observable<Product> {
+  updateProductPUT(idProduct: number, body: UpdateProducto): Observable<Product> {
     return this.http.put<Product>(`https://example.com/api/productos`, body);
   }
 
-  updateProductPATCH(idProduct: string, body: UpdateProducto): Observable<Product> {
+  updateProductPATCH(idProduct: number, body: UpdateProducto): Observable<Product> {
     return this.http.patch<Product>(`https://example.com/api/productos`, body);
+  }
+
+
+  /* ********** DELETE ********** */
+
+  deleteProduct(idProduct: number): Observable<boolean> {
+    return this.http.delete<boolean>(`https://example.com/api/productos/${idProduct}`);
   }
 
 }
