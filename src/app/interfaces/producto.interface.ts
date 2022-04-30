@@ -15,3 +15,5 @@ export interface Product {
 export interface CreateProducto extends Omit<Product, 'id' | 'category'> {
   idCategory: string;
 }
+
+export interface UpdateProducto extends Partial<CreateProducto> { }

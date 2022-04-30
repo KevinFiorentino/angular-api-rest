@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { Product, CreateProducto } from '../interfaces/producto.interface';
+import { Product, CreateProducto, UpdateProducto } from '../interfaces/producto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +67,17 @@ export class ApiService {
         image: 'https://static3.depositphotos.com/1000865/118/i/600/depositphotos_1183767-stock-photo-toy-car.jpg'
       }
     ]);
+  }
+
+
+  /* ********** PUT & PATCH ********** */
+
+  updateProductPUT(idProduct: string, body: UpdateProducto): Observable<Product> {
+    return this.http.put<Product>(`https://example.com/api/productos`, body);
+  }
+
+  updateProductPATCH(idProduct: string, body: UpdateProducto): Observable<Product> {
+    return this.http.patch<Product>(`https://example.com/api/productos`, body);
   }
 
 }
