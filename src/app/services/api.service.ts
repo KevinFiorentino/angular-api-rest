@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { retry } from 'rxjs/operators';
 import { Product, CreateProducto, UpdateProducto } from '../interfaces/producto.interface';
 
 @Injectable({
@@ -57,16 +58,10 @@ export class ApiService {
   }
 
   getProduct(idProduct: number): Observable<Product> {
-    // return this.http.get<Product>(`https://example.com/api/productos/${idProduct}`);
-    return of(
-      {
-        id: 1,
-        name: 'Automobil de juguete',
-        precio: 100,
-        description: 'Lorem ipsum...',
-        image: 'https://static3.depositphotos.com/1000865/118/i/600/depositphotos_1183767-stock-photo-toy-car.jpg'
-      }
-    );
+    return this.http.get<Product>(`https://example.com/api/productos/${idProduct}`)
+      .pipe(
+        retry(2)
+      );
   }
 
   getProductsParams(offset: number, limit: number): Observable<any> {
