@@ -25,6 +25,13 @@ export class CatalogoComponent implements OnInit {
       });
   }
 
+  getProductsParams(): void {
+    this.apiService.getProductsParams(0, 10)
+      .subscribe(res => {
+        this.productos = res;
+      });
+  }
+
   addProductToCart(p: Product): void {
     this.shoppingCart.push(p);
     this.total += p.precio;

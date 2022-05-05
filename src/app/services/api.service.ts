@@ -69,6 +69,10 @@ export class ApiService {
     );
   }
 
+  getProductsParams(offset: number, limit: number): Observable<any> {
+    return this.http.get<Product[]>(`https://example.com/api/productos`, { params: { offset, limit } });
+  }
+
 
   /* ********** PUT & PATCH ********** */
 
