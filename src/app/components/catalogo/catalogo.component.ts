@@ -25,6 +25,7 @@ export class CatalogoComponent implements OnInit {
       });
   }
 
+  // Obtener datos con paginación
   getProductsParams(): void {
     this.apiService.getProductsParams(0, 10)
       .subscribe(res => {
@@ -32,11 +33,13 @@ export class CatalogoComponent implements OnInit {
       });
   }
 
+  // Agregar producto al carrito
   addProductToCart(p: Product): void {
     this.shoppingCart.push(p);
     this.total += p.precio;
   }
 
+  // ALta de producto
   createProduct(): void {
     const body: CreateProducto = {
       name: 'Nuevo producto',
@@ -52,6 +55,7 @@ export class CatalogoComponent implements OnInit {
       });
   }
 
+  // Modificar producto
   updateProduct(idProduct: number): void {
     const body: UpdateProducto = {
       name: 'Nuevo nombre del producto',
@@ -64,6 +68,7 @@ export class CatalogoComponent implements OnInit {
       });
   }
 
+  // Borrar producto
   deleteProduct(idProduct: number): void {
     this.apiService.deleteProduct(idProduct)
       .subscribe(p => {
