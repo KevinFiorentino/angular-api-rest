@@ -22,6 +22,8 @@ export class CatalogoComponent implements OnInit {
     this.apiService.getProducts()
       .subscribe(res => {
         this.productos = res;
+      }, err => {
+        alert(err);
       });
   }
 

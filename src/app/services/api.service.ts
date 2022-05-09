@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { retry } from 'rxjs/operators';
 import { Product, CreateProducto, UpdateProducto } from '../interfaces/producto.interface';
 
@@ -17,14 +18,24 @@ export class ApiService {
   /* ********** POST ********** */
 
   createProduct(body: CreateProducto): Observable<Product> {
-    return this.http.post<Product>(`https://example.com/api/productos`, body);
+    return this.http.post<Product>(`https://example.com/api/productos`, body)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          return this.handleErrors(err)
+        })
+      );
   }
 
 
   /* ********** GET ********** */
 
   getProducts(): Observable<Product[]> {
-    // return this.http.get<Product[]>(`https://example.com/api/productos`);
+    /* return this.http.get<Product[]>(`https://example.com/api/productos`)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          return this.handleErrors(err)
+        })
+      ); */
     return of([
       {
         id: 1,
@@ -54,36 +65,74 @@ export class ApiService {
         description: 'Lorem ipsum...',
         image: 'https://i.imgur.com/44nzvkQ.jpg'
       }
-    ])
+    ]);
   }
 
   getProduct(idProduct: number): Observable<Product> {
     return this.http.get<Product>(`https://example.com/api/productos/${idProduct}`)
       .pipe(
-        retry(2)
+        retry(2),
+        catchError((err: HttpErrorResponse) => {
+          return this.handleErrors(err)
+        })
       );
   }
 
   getProductsParams(offset: number, limit: number): Observable<any> {
-    return this.http.get<Product[]>(`https://example.com/api/productos`, { params: { offset, limit } });
+    return this.http.get<Product[]>(`https://example.com/api/productos`, { params: { offset, limit } })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          return this.handleErrors(err)
+        })
+      );
   }
 
 
   /* ********** PUT & PATCH ********** */
 
   updateProductPUT(idProduct: number, body: UpdateProducto): Observable<Product> {
-    return this.http.put<Product>(`https://example.com/api/productos`, body);
+    return this.http.put<Product>(`https://example.com/api/productos`, body)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          return this.handleErrors(err)
+        })
+      );
   }
 
   updateProductPATCH(idProduct: number, body: UpdateProducto): Observable<Product> {
-    return this.http.patch<Product>(`https://example.com/api/productos`, body);
+    return this.http.patch<Product>(`https://example.com/api/productos`, body)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          return this.handleErrors(err)
+        })
+      );
   }
 
 
   /* ********** DELETE ********** */
 
   deleteProduct(idProduct: number): Observable<boolean> {
-    return this.http.delete<boolean>(`https://example.com/api/productos/${idProduct}`);
+    return this.http.delete<boolean>(`https://example.com/api/productos/${idProduct}`)
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          return this.handleErrors(err)
+        })
+      );
+  }
+
+
+  /* ********** ERRORS ********** */
+
+  handleErrors(error: HttpErrorResponse): Observable<never>  {
+
+    if (error.status == HttpStatusCode.Forbidden)
+      return throwError('No tiene permisos para realizar la solicitud.');
+    if (error.status == HttpStatusCode.NotFound)
+      return throwError('El producto no existe.');
+    if (error.status == HttpStatusCode.InternalServerError)
+      return throwError('Error en el servidor.');
+
+    return throwError('Un error inesperado ha ocurrido.');
   }
 
 }
