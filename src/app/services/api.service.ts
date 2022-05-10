@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { retry, catchError, map } from 'rxjs/operators';
+import { retry, catchError, map, tap } from 'rxjs/operators';
 import { Product, CreateProducto, UpdateProducto } from '../interfaces/producto.interface';
 
 @Injectable({
@@ -33,6 +33,9 @@ export class ApiService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           return this.handleErrors(err)
+        }),
+        tap(products => {
+          console.log('Productos', products);
         }),
         map(products => products.map(p => {
           // Aplica aquí la lógica que quieras con cada producto.
