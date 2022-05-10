@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { retry } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 import { Product, CreateProducto, UpdateProducto } from '../interfaces/producto.interface';
 
 @Injectable({
@@ -30,13 +29,17 @@ export class ApiService {
   /* ********** GET ********** */
 
   getProducts(): Observable<Product[]> {
-    /* return this.http.get<Product[]>(`https://example.com/api/productos`)
+    return this.http.get<Product[]>(`https://example.com/api/productos`)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           return this.handleErrors(err)
-        })
-      ); */
-    return of([
+        }),
+        map(products => products.map(p => {
+          // Aplica aquí la lógica que quieras con cada producto.
+          return p;
+        }))
+      );
+    /* return of([
       {
         id: 1,
         name: 'Automobil de juguete',
@@ -65,7 +68,7 @@ export class ApiService {
         description: 'Lorem ipsum...',
         image: 'https://i.imgur.com/44nzvkQ.jpg'
       }
-    ]);
+    ]); */
   }
 
   getProduct(idProduct: number): Observable<Product> {
