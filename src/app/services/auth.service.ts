@@ -12,11 +12,17 @@ export class AuthService {
     private http: HttpClient,
   ) { }
 
-  login(credentials: Credentials): Observable<Login> {
+  loginUser(credentials: Credentials): Observable<Login> {
+    /* const token = localStorage.getItem('platzi_token'); */
     return this.http.post<Login>(`https://example.com/api/login`, credentials);
+    /* {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    } */
   }
 
-  profile(): Observable<User> {
+  getProfileUser(): Observable<User> {
     return this.http.get<User>(`https://example.com/api/profile`);
   }
 
