@@ -8,23 +8,23 @@ export class TokenInterceptorService implements HttpInterceptor {
   constructor() { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
-    let token: string | null = '';
-
-    token = localStorage.getItem('platzi_token');
-
-    if (token)
-      request = this.addHeaders(request, token);
-
+    request = this.addHeaders(request);
     return next.handle(request)
   }
 
-  private addHeaders(request: HttpRequest<any>, token: string) {
-    return request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+  private addHeaders(request: HttpRequest<any>) {
+    let token: string | null = '';
+    token = localStorage.getItem('platzi_token');
+    if (token) {
+      return request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    } else {
+      return request;
+    }
+
   }
 
 }
