@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { Product, CreateProducto, UpdateProducto } from '../../interfaces/producto.interface';
+import { Product, CreateProducto, UpdateProducto } from 'src/app/interfaces/producto.interface';
+import { zip } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-catalogo',
@@ -80,6 +82,39 @@ export class CatalogoComponent implements OnInit {
           this.productos.splice(index, 1);
         }
       });
+  }
+
+
+  readAndUpdate(): void {
+    // 1. Ejemplo de callback hell
+    this.apiService.getProduct(1)
+      .subscribe(res => {
+        this.apiService.updateProductPATCH(1, { name: 'Nuevo nombre' })
+          .subscribe(res2 => {
+            // Producto actualizado
+          });
+      });
+
+
+    // 2. Solución callback hell
+    this.apiService.getProduct(1)
+      .pipe(
+        switchMap(products => this.apiService.updateProductPATCH(1, { name: 'Nuevo nombre' }) )
+      )
+      .subscribe(res => {
+        // Producto actualizado
+      });
+
+
+    // 3. Agrupando observables en un mismo subscribe
+    zip(
+      this.apiService.getProduct(1),
+      this.apiService.updateProductPATCH(1, { name: 'Nuevo nombre' })
+    )
+    .subscribe(res => {
+      const get = res[0];
+      const update = res[1];
+    });
   }
 
 }
