@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Credentials, Login, User } from 'src/app/interfaces/user.interface';
 import { Observable } from 'rxjs';
 
@@ -17,13 +17,16 @@ export class AuthService {
   }
 
   getProfileUser(): Observable<User> {
-    /* const token = localStorage.getItem('platzi_token'); */
-    return this.http.get<User>(`https://example.com/api/profile`);
-    /* {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    } */
+    return this.http.post<User>(`https://example.com/api/profile`, {});  /* this.getHttpHeaders() */
   }
+
+  /* private getHttpHeaders() {
+    const token = localStorage.getItem('platzi_token');
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      })
+    };
+  } */
 
 }
