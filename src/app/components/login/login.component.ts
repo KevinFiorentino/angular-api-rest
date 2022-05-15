@@ -18,9 +18,16 @@ export class LoginComponent {
       email: 'user@gmail.com',
       password: '123456',
     };
-    this.auth.login(credentials)
+    this.auth.loginUser(credentials)
       .subscribe((res: Login) => {
         localStorage.setItem('platzi_token', res.access_token);
+      });
+  }
+
+  getProfileUser(): void {
+    this.auth.getProfileUser()
+      .subscribe((res: User) => {
+        console.log(res);
       });
   }
 
