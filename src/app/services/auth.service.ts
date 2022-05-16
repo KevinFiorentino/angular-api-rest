@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Credentials, Login, User } from 'src/app/interfaces/user.interface';
+import { addToken } from '../interceptors/token-interceptor.interceptor';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class AuthService {
   ) { }
 
   loginUser(credentials: Credentials): Observable<Login> {
-    return this.http.post<Login>(`https://example.com/api/login`, credentials);
+    return this.http.post<Login>(`https://example.com/api/login`, credentials, { context: addToken() });
   }
 
   getProfileUser(): Observable<User> {
