@@ -27,7 +27,7 @@ export class CatalogoComponent implements OnInit {
       .subscribe(res => {
         this.productos = res;
       }, err => {
-        alert(err);
+        console.error(err);
       });
   }
 
@@ -87,6 +87,8 @@ export class CatalogoComponent implements OnInit {
   }
 
 
+  // ********** Evitando Callback Hell **********
+
   readAndUpdate(): void {
     // 1. Ejemplo de callback hell
     this.apiService.getProduct(1)
@@ -119,9 +121,12 @@ export class CatalogoComponent implements OnInit {
     });
   }
 
-  // Descarga de Archivos
+
+  // ********** Manipulación de Archivos **********
+
+  // Descarga de archivos
   openFile(): void {
-    this.filesService.getFile('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')
+    this.filesService.getFile('../../../assets/dummy.pdf')
       .then(response => response.blob())
       .then(pdf => {
         window.open(URL.createObjectURL(pdf), '_blank');
@@ -129,6 +134,18 @@ export class CatalogoComponent implements OnInit {
       .catch(err => {
         console.log(err);
       });
+  }
+
+  // Subida de archivos
+  onLoad(event: Event): void {
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.item(0);
+    if (file) {
+      this.filesService.uploadFile(file)
+        .subscribe(res => {
+          console.log(res);
+        });
+    }
   }
 
 }
