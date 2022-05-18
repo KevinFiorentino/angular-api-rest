@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
+import { FilesService } from 'src/app/services/files.service';
 import { Product, CreateProducto, UpdateProducto } from 'src/app/interfaces/producto.interface';
 import { zip } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -18,6 +19,7 @@ export class CatalogoComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
+    private filesService: FilesService
   ) { }
 
   ngOnInit(): void {
@@ -115,6 +117,18 @@ export class CatalogoComponent implements OnInit {
       const get = res[0];
       const update = res[1];
     });
+  }
+
+  // Descarga de Archivos
+  openFile(): void {
+    this.filesService.getFile('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')
+      .then(response => response.blob())
+      .then(pdf => {
+        window.open(URL.createObjectURL(pdf), '_blank');
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
 }
